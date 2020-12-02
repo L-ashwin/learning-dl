@@ -16,18 +16,18 @@ class Linear:
             # calculate class scores
             S = X_data@W.T + b
 
-             # softmax on scores
+            # softmax on scores
             A = self.softmax(S)
 
             # cross entropy loss
             loss = -np.sum(np.log(A[np.arange(n), y_data]))
 
-             # calculate gradients
+            # calculate gradients
             dS = A # d_loss/d_score
             dS[np.arange(n), y_data] -= 1
 
             dW = dS.T@X_data #d_loss/d_W
-            db = dS
+            db = dS.sum(axis=0)
 
             # update weights
             W -= lr*dW
@@ -38,12 +38,12 @@ class Linear:
                 self.W, self.b = W, b
 
     def predict(self, X):
-        S    = X@self.W.T + self.b
+        S = X@self.W.T + self.b
         pred = np.argmax(S, axis=1)
         return pred
 
     def softmax(self, S):
-        #subtract max from each example for numerical stability
+        # subtract max from each example for numerical stability
         S -= np.max(S, axis=1, keepdims=True)
         S_exp   = np.exp(S)
         softmax = (S_exp + 1e-6)/(np.sum(S_exp, axis=1, keepdims=True) + len(S_exp)*1e-6)
