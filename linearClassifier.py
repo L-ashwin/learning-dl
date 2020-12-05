@@ -1,10 +1,20 @@
 import numpy as np
+from tqdm import tqdm
 class Linear:
     def __init__(self):
         self.W = None
         self.b = None
 
     def train(self, X_data, y_data, lr=1e-2, epochs=10):
+        """
+        Trains a linear classifier with given data and stores weights curresponding
+        to lowest loss epoch.
+
+        X_data : feature array with shape [number of examples, number of feature]
+        y_data : integer encoded labels / targets array with shape [number of examples, ]
+        lr     : learning rate
+        epochs  : number of epochs
+        """
 
         n, m = X_data.shape # number of examples, feature dimensions
         c = 10 # number of classes
@@ -12,7 +22,7 @@ class Linear:
         W, b = self.initialize_parameters(m, c)
 
         best_loss = np.inf
-        for epoch in range(epochs):
+        for epoch in tqdm(range(epochs)):
             # calculate class scores
             S = X_data@W.T + b
 
@@ -21,6 +31,7 @@ class Linear:
 
             # cross entropy loss
             loss = -np.sum(np.log(A[np.arange(n), y_data]))
+            #print(f'for epoch:{epoch} => training loss:{loss}')
 
             # calculate gradients
             dS = A # d_loss/d_score
@@ -38,6 +49,11 @@ class Linear:
                 self.W, self.b = W, b
 
     def predict(self, X):
+        """
+        reutrns predicted class for input featureset.
+
+        X : feature array with shape [number of examples, number of feature]
+        """
         S = X@self.W.T + self.b
         pred = np.argmax(S, axis=1)
         return pred
