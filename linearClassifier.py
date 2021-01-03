@@ -42,7 +42,7 @@ class Linear:
 
             # update weights
             W -= lr*dW
-            b -= lr*b
+            b -= lr*db
 
             if loss < best_loss:
                 best_loss = loss
