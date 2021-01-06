@@ -5,7 +5,7 @@ class Linear:
         self.W = None
         self.b = None
 
-    def train(self, X_data, y_data, lr=1e-2, epochs=10):
+    def train(self, X_data, y_data, no_classes, lr=1e-2, epochs=10):
         """
         Trains a linear classifier with given data and stores weights curresponding
         to lowest loss epoch.
@@ -17,7 +17,7 @@ class Linear:
         """
 
         n, m = X_data.shape # number of examples, feature dimensions
-        c = 10 # number of classes
+        c = no_classes # number of classes
 
         W, b = self.initialize_parameters(m, c)
 
